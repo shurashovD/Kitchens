@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="breef.css">
+    <title>I-breef</title>
+</head>
+<body>
+    <form action="I.php" method="POST">
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/70.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Глубина тумбы">Tiefe der Unterschrank, mm</p>
+                <input type="text" name="first-pedestal-depth" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/80.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Нависание столешницы">Überhang Platte, mm</p>
+                <input type="text" name="first-front-overhang" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/90.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p">Länge der Platte, mm</p>
+                <input type="text" name="first-diex" class="form-card-text-input">
+            </div>
+        </div>
+        <input type="submit" value="Weiter" title="Далее">
+    </form>
+    <script src="breef.js"></script>
+</body>
+</html>

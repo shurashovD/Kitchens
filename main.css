@@ -1,0 +1,369 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    --blue: #3c9dd0;
+    --blue-hover: #086ca2;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
+
+
+.draw {
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.inputs {
+    width: min-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.input-buttons-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.inputs__build {
+    margin: 20px auto;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+}
+
+.inputs__build:hover {
+    background-color: var(--blue-hover);
+    transition: background-color .2s;
+}
+
+.coords {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.coords thead {
+    border-collapse: collapse;
+}
+
+.coords tfoot {
+    border-collapse: collapse;
+}
+
+.coords tr td input {
+    font-size: 12pt;
+    border: none;
+    width: 70px;
+    text-align: center;
+    padding: 5px;
+}
+.coords-modul__input:focus {
+    border: 1px solid red;
+}
+
+.coords-name {
+    min-width: 60px;
+    border: 1px solid var(--blue);
+}
+
+.coords-modul {
+    min-width: 100px;
+    border: 1px solid var(--blue);
+}
+
+.coords-move {
+    min-width: 160px;
+    border: 1px solid var(--blue);
+}
+
+.coords-angle {
+    min-width: 100px;
+    border: 1px solid var(--blue);
+}
+
+.coords-action {
+    min-width: 100px;
+    border: 1px solid var(--blue);
+}
+
+.coords tfoot tr td {
+    border: 1px solid var(--blue);
+}
+
+.coords-action__link {
+    margin: 20px auto;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+}
+.coords-action__link:hover {
+    background-color: var(--blue-hover);
+    transition: background-color .2s;
+}
+
+.coords-action-delete__link {
+    margin: 20px auto;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+}
+.coords-action-delete__link:hover {
+    background-color: var(--blue-hover);
+    transition: background-color .2s;
+}
+
+.coords-action-print__link {
+    margin: 20px auto;
+    padding: 10px 15px;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+}
+
+.coords-action-print__link:hover {
+    background-color: var(--blue-hover);
+    transition: background-color .2s;
+}
+
+.display {
+    margin: 20px auto;
+    /*width: 900px;
+    height: 600px;*/
+    border: 1px solid var(--blue);
+    display: none;
+}
+
+.verific-row {
+    margin-top: 20px;
+    width: 100%;
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.verific {
+    border: none;
+    margin: 0 5px;
+    height: 14pt;
+    font-size: 12pt;
+    appearance: none;
+    width: max-content;
+}
+
+.verific__value {
+    border: none;
+    width: 60px;
+    height: 14pt;
+    padding: 10px;
+    font-size: 12pt;
+}
+
+.verific__action {
+    margin: 20px auto;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: var(--blue);
+    color: white;
+}
+
+.verific__error {
+    padding: 0;
+    margin: 0;
+}
+
+.draft {
+    display: none;
+}
+
+.out {
+    width: 100%;
+    display: none;
+}
+
+.out-table {
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.out-table-head {
+    font-weight: 550;
+}
+
+.out-table td {
+    border: 1px solid var(--blue);
+    padding: 10px 25px;
+    font-size: 14pt;
+}
+
+.measuring {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.measuring-panel {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: var(--blue);
+    padding: 15px;
+}
+
+.measuring-dialog {
+    width: 75%;
+    background-color: white;
+    margin: 0;
+    padding: 12px;
+    border-radius: 12px;
+    min-height: 50px;
+}
+
+.panel-btn {
+    background-color: #fff;
+    border: none;
+    border-radius: 12px;
+    height: 50px;
+    min-width: 200px;
+    margin: 0 5px;
+    font-size: 100%;
+    cursor: pointer;
+    transition: .2s;
+}
+.panel-btn:focus {
+    outline: none;
+}
+.panel-btn:active {
+    transform: scale(0.95);
+}
+
+.canvas-conteiner {
+    position: relative;
+}
+
+#measuring-canvas {
+    border: 1px solid var(--blue);
+    margin-top: 10px;
+}
+
+.device-panel {
+    position: absolute;
+    bottom: 60px;
+    left: 740px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.device-panel-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+.device-panel__btn {
+    margin-bottom: 12px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid var(--blue);
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    transition: .2s;
+}
+.device-panel__btn:focus {
+    outline: none;
+}
+.device-panel__btn:active {
+    transform: scale(0.95);
+}
+
+.input-measure {
+    padding: 6px;
+    border: 1px solid var(--blue);
+    margin: 0;
+}
+.input-measure:focus {
+    outline: none;
+}
+
+.input-measure-btn {
+    margin: 0;
+    border: none;
+    background-color: var(--blue);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: .2s;
+}
+.input-measure-btn:focus {
+    outline: none;
+}
+.input-measure-btn:active {
+    transform: scale(0.95);
+}
+
+.rotate-btn {
+    position: fixed;
+    top: 15vh;
+    right: 50px;
+    border: 1px solid var(--blue);
+    background-color: rgba(0, 0, 0, 0);
+    min-height: 40px;
+    min-width: 40px;
+    cursor: pointer;
+    transition: .2s;
+    background-image: url("img/rotate.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
+}
+.rotate-btn:focus {
+    outline: none;
+}
+.rotate-btn:active {
+    transform: scale(0.95);
+}
+
+.lazer-btn {
+    background-image: url("img/lazer.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 90% 90%;
+}
+
+.roller-btn {
+    background-image: url("img/roller.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 90% auto;
+}

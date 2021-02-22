@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="breef.css">
+    <title>U-breef</title>
+</head>
+
+<body>
+    <form action="Us.php" method="POST">
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/70.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Глубина первой тумбы">Unterschranktiefe erster Platte, mm</p>
+                <input type="text" name="first-pedestal-depth" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/80.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Нависание первой столешницы">Überhang erster Platte, mm</p>
+                <input type="text" name="first-front-overhang" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/70.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Глубина второй тумбы">Unterschranktiefe zweiter Platte, mm</p>
+                <input type="text" name="second-pedestal-depth" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/80.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Нависание второй столешницы">Überhang erster Platte, mm</p>
+                <input type="text" name="second-front-overhang" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/70.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Глубина тертьей тумбы">Unterschranktiefe dritte Platte, mm</p>
+                <input type="text" name="fird-pedestal-depth" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/80.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Нависание тертьей столешницы">Überhang dritte Platte, mm</p>
+                <input type="text" name="fird-front-overhang" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-logo">
+                <img src="./img/190.png" alt="img" class="form-card-logo__img">
+            </div>
+            <div class="form-card-info">
+                <p class="form-card-info__p" title="Глубина хорды сопряжения">Tiefe der Zusammenwirkungsehe, mm</p>
+                <input type="text" name="first-second-trougth" class="form-card-text-input">
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-row">
+                <label class="form-card-label">
+                    <input type="radio" name="base-counter" value="left" class="form-card-label__radio" checked>
+                    <img src="./img/40.png" alt="left" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Тип сопряжения">
+                        Verbindungstyp №1
+                    </p>
+                </label>
+                <label class="form-card-label">
+                    <input type="radio" name="base-counter" value="right" class="form-card-label__radio">
+                    <img src="./img/60.png" alt="right" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Тип сопряжения">
+                        Verbindungstyp №2
+                    </p>
+                </label>
+                <label class="form-card-label">
+                    <input type="radio" name="base-counter" value="forward" class="form-card-label__radio">
+                    <img src="./img/30.png" alt="forward" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Тип сопряжения">
+                        Verbindungstyp №3
+                    </p>
+                </label>
+                <label class="form-card-label">
+                    <input type="radio" name="base-counter" value="reverse" class="form-card-label__radio">
+                    <img src="./img/50.png" alt="reverse" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Тип сопряжения">
+                        Verbindungstyp №4
+                    </p>
+                </label>
+            </div>
+        </div>
+        <div class="form-card">
+            <div class="form-card-row">
+                <label class="form-card-label">
+                    <input type="radio" name="base-side" value="First" class="form-card-label__radio" checked>
+                    <img src="./img/100.png" alt="first" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Базовая столешницы">
+                        Basisplatte
+                    </p>
+                </label>
+                <!--<label class="form-card-label">
+                    <input type="radio" name="base-side" value="Second" class="form-card-label__radio">
+                    <img src="./img/110.png" alt="second" class="form-card-label__img">
+                    <p class="form-card-info__p">
+                        Basisplatte
+                    </p>
+                </label>-->
+                <label class="form-card-label">
+                    <input type="radio" name="base-side" value="Fird" class="form-card-label__radio">
+                    <img src="./img/120.png" alt="firnd" class="form-card-label__img">
+                    <p class="form-card-info__p" title="Базовая столешницы">
+                        Basisplatte
+                    </p>
+                </label>
+            </div>
+        </div>
+        <input type="submit" value="Weiter">
+    </form>
+    <script src="breef.js"></script>
+</body>
+
+</html>

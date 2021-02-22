@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Küchengarnitur-U</title>
+    <link rel="stylesheet" href="U.css">
+</head>
+<body>
+<main>
+    <section class="initial">
+        <div class="initial-settings-type">
+            <a href="#initial" class="initial-settings-type__btn base active-settings-type">
+                База
+            </a>
+            <a href="#initial" class="initial-settings-type__btn extend">
+                Расширение
+            </a>
+        </div>
+        <div class="initial-body">
+            <div class="initial-body-base">
+                <div class="initial-body-row">
+                    <label class="initial-top__label" for="initial-top__input">Количество точек в замере</label>
+                    <input type="number" class="initial-top__input" min="4" max="25" value="4" id="initial-top__input">
+                </div>
+                <div class="initial-body-row">
+                    <p class="initial-base-side__label">Базовая сторона</p>
+                    <a href="#initial" class="initial-base-side__select btn first-side">
+                        AB
+                    </a>
+                </div>
+                <div class="initial-body-row">
+                    <p class="initial-left-angle__label">Левый верхний угол</p>
+                    <a href="#initial" class="initial-left-angle__value btn">B</a>
+                </div>
+                <div class="initial-body-row">
+                    <p class="initial-right-angle__label">Правый верхний угол</p>
+                    <a href="#initial" class="initial-right-angle__value btn">C</a>
+                </div>
+            </div>
+            <div class="initial-body-extend">
+                <div class="initial-body-row">
+                    <a href="#initial" class="initial__type btn modul-before">
+                        Сначала модули
+                    </a>
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-impact__label">На замер влияют</label>
+                    <div class="initial-impact">
+                        <a href="#initial" class="initial-impact__point btn">A</a>
+                        <a href="#initial" class="initial-impact__point btn">B</a>
+                        <a href="#initial" class="initial-impact__point btn">C</a>
+                        <a href="#initial" class="initial-impact__point btn">D</a>
+                    </div>
+                </div>
+                <div class="initial-body-row">
+                    <p class="initial-base-side-orient__label">Ориентация базовой стороны</p>
+                    <a href="#initial" class="initial-base-side-orient__value btn vertical">
+                        Вертикально
+                    </a>
+                </div>
+                <div class="initial-body-row">
+                    <p class="initial-base-counter__label">Базовая столешница</p>
+                    <a href="#initial" class="initial-base-counter__value btn" data-direction="right">
+                        Первая
+                    </a>
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-depth__label" for="initial-depth__input">Глубина тумбы 1 столешница mm</label>
+                    <input type="number" class="initial-depth__input first" value="560" id="initial-depth__input">
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-depth__label" for="initial-depth__input">Глубина тумбы 2 столешница mm</label>
+                    <input type="number" class="initial-depth__input second" value="560" id="initial-depth__input">
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-depth__label" for="initial-depth__input">Глубина тумбы 3 столешница mm</label>
+                    <input type="number" class="initial-depth__input fird" value="560" id="initial-depth__input">
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-overhang__label" for="initial-overhang__input">Нависание 1 столешница mm</label>
+                    <input type="number" class="initial-overhang__input first" value="40" id="initial-overhang__input">
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-overhang__label" for="initial-overhang__input">Нависание 2 столешница mm</label>
+                    <input type="number" class="initial-overhang__input second" value="40" id="initial-overhang__input">
+                </div>
+                <div class="initial-body-row">
+                    <label class="initial-overhang__label" for="initial-overhang__input">Нависание 3 столешница mm</label>
+                    <input type="number" class="initial-overhang__input fird" value="40" id="initial-overhang__input">
+                </div>
+            </div>
+        </div>
+        <div class="initial-bottom">
+            <a href="#indata" class="initial__next btn">Далее</a>
+        </div>
+    </section>
+    <section class="indata">
+        <div class="indata-row">
+            <p class="indata-row__label">OA=</p>
+            <input type="text" class="indata-row__value">
+            <p class="indata-row__dimension">mm</p>
+        </div>
+        <div class="indata-row">
+            <a href="#indata" class="indata-row__prev btn">Назад</a>
+            <a href="#indata" class="indata-row__next btn modul-input" data-point="A">Далее</a>
+        </div>
+    </section>
+    <section class="draft">
+        <div class="page-break">
+            <canvas class="main-draft" width="1400" height="700"></canvas>
+        </div>
+        <div class="page-break">
+            <canvas class="first-draft" width="1400" height="700"></canvas>
+        </div>
+        <div class="page-break">
+            <canvas class="second-draft" width="1400" height="700"></canvas>
+        </div>
+        <div class="page-break">
+            <canvas class="fird-draft" width="1400" height="700"></canvas>
+        </div>
+        <div class="page-break final-tables">
+            <table class="final-table">
+                <thead>
+                    <tr>
+                        <td>Точка</td>
+                        <td>Х</td>
+                        <td>У</td>
+                    </tr>
+                </thead>
+                <tbody class="final-tables-first-body"></tbody>
+            </table>
+            <table class="final-table">
+                <thead>
+                    <tr>
+                        <td>Точка</td>
+                        <td>Х</td>
+                        <td>У</td>
+                    </tr>
+                </thead>
+                <tbody class="final-tables-second-body"></tbody>
+            </table>
+            <table class="final-table">
+                <thead>
+                    <tr>
+                        <td>Точка</td>
+                        <td>Х</td>
+                        <td>У</td>
+                    </tr>
+                </thead>
+                <tbody class="final-tables-fird-body"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+</body>
+<script src="U.js"></script>
+</html>
