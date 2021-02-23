@@ -276,10 +276,6 @@ a {
     /*page-break-before: always;*/
 }
 
-.main-draft-conteiner {
-    display: none;
-}
-
 canvas {
     display: flex;
     margin: auto;

@@ -17,12 +17,15 @@ const secondDraft = document.querySelector('.second-draft');
 const finalTablesFirstBody = document.querySelector('.final-tables-first-body');
 const finalTablesSecondBody = document.querySelector('.final-tables-second-body');
 
+const demoCanvas = document.querySelector('.demo-conteiner__cnv');
+const demoCanvasCtx = demoCanvas.getContext('2d');
+
 const Letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 const lettersMap = new Map();
 Letters.forEach((e, i) => lettersMap.set(i, e));
 
 let MeasPoints = new Map();
-let Step = 0;
+let Step = -1;
 let COORDS = [];
 let MATRIX = [];
 let displayCoords = [];
@@ -38,12 +41,736 @@ let dieCoordsY = [];
 
 let initialBasePointOne, initialBasePointTwo;   // точки базовой стороны;
 let initialBaseSideOrientVertical = true;       // ориентация базовой столешницы;
-//let initialBaseSideFirst = true;              // базовая столешница первая;
+let initialBaseSideFirst = true;              // базовая столешница первая;
 let initialLeftAngle = null;                    // угловая точка;
-//let initialBaseCounter = 'right';             // тип сопряжения 'right' 'left';
+let initialBaseCounter = 'right';             // тип сопряжения 'right' 'left';
+
+class Demo {
+    demoProgress = 0;
+    req;
+    demoDuration = 60000;
+    newProgress = this.demoProgress;
+    playProp = false;
+
+    constructor(btn, progressLine, canvasCtx) {
+        this.button = btn;
+        this.demoProgressLine = progressLine;
+        this.button.addEventListener('click',
+        this.buttonClick);
+        this.ctx = canvasCtx;
+    }
+
+    animate = (time, duration, draw) => {
+        this.req = requestAnimationFrame(() => {
+            let timeFraction = (performance.now() - time)/duration;
+            if ( timeFraction > 1 ) timeFraction = 1;
+            draw(timeFraction);
+            if ( timeFraction == 1 )  return;
+            this.animate(time, duration, draw);
+        });
+    }
+
+    demoDraw = (progress) => {
+        const time = this.demoProgress + (1-this.demoProgress)*progress;
+        this.demoProgressLine.style.width = 100*time + '%';
+        this.newProgress = time;
+        this.renderDemoCanvas(time);
+    }
+
+    play = () => {
+        const animationTime = this.demoDuration * (1-this.demoProgress);
+        this.animate(performance.now(), animationTime, this.demoDraw);
+    }
+
+    pause = () => {
+        cancelAnimationFrame(this.req);
+        this.demoProgress = this.newProgress;
+        this.demoDraw();
+    }
+
+    changeProgress = (progress) => {
+        if ( this.playProp ) {
+            cancelAnimationFrame(this.req);
+            this.demoProgress = progress;
+            this.play();
+        }
+        else {
+            this.demoProgress = progress;
+            this.demoDraw(0);
+        }
+    }
+
+    buttonClick = () => {
+        this.playProp = !this.playProp;
+        if ( this.playProp ) {
+            this.button.classList.remove('progress-btn__play');
+            this.button.classList.add('progress-btn__pause');
+            this.play();
+        }
+        else {
+            this.button.classList.add('progress-btn__play');
+            this.button.classList.remove('progress-btn__pause');
+            this.pause();
+        }
+    }
+
+    renderDemoCanvas = (progress) => {
+        if ( progress < 0.034 ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.034) && ( progress < 0.08 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.08) && ( progress < 0.126 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.126) && ( progress < 0.172 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.172) && ( progress < 0.218 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.218) && ( progress < 0.264 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.264) && ( progress < 0.31 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.31) && ( progress < 0.356 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.356) && ( progress < 0.402 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.402) && ( progress < 0.448 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(350, 50);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.448) && ( progress < 0.494 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(550, 50);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.494) && ( progress < 0.54 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(550, 150);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.54) && ( progress < 0.586 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(570, 150);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.586) && ( progress < 0.632 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(570, 200);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.632) && ( progress < 0.678 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(550, 200);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.678) && ( progress < 0.724 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(300, 350);
+            this.ctx.lineTo(550, 300);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.724) && ( progress < 0.77 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(350, 50);
+            this.ctx.lineTo(550, 50);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.77) && ( progress < 0.816 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(550, 50);
+            this.ctx.lineTo(550, 150);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.816) && ( progress < 0.862 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(550, 150);
+            this.ctx.lineTo(570, 150);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.862) && ( progress < 0.908 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(570, 150);
+            this.ctx.lineTo(570, 200);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( (progress >= 0.908) && ( progress < 0.954 ) ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(570, 200);
+            this.ctx.lineTo(550, 200);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+        if ( progress >= 0.954 ) {
+            this.ctx.fillStyle = '#ffffff';
+            this.ctx.fillRect(0, 0, 600, 450);
+            this.ctx.fill();
+
+            this.ctx.strokeStyle = '#ff0000';
+            this.ctx.lineWidth = 2;
+            this.ctx.beginPath();
+            this.ctx.strokeRect(50, 50, 500, 350);
+            this.ctx.moveTo(350, 50);
+            this.ctx.arc(350, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 50);
+            this.ctx.arc(550, 50, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 150);
+            this.ctx.arc(550, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 150);
+            this.ctx.arc(570, 150, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(570, 200);
+            this.ctx.arc(570, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 200);
+            this.ctx.arc(550, 200, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(550, 300);
+            this.ctx.arc(550, 300, 2, 0, 2*Math.PI);
+            this.ctx.moveTo(310, 350);
+            this.ctx.arc(300, 350, 10, 0, 2*Math.PI);
+            this.ctx.closePath();
+            this.ctx.stroke();
+
+            this.ctx.strokeStyle = '#c0c0c0';
+            this.ctx.lineWidth = 1;
+            this.ctx.beginPath();
+            this.ctx.moveTo(550, 200);
+            this.ctx.lineTo(550, 300);
+            this.ctx.closePath();
+            this.ctx.stroke();
+        }
+    }
+}
+
+const demoObj = new Demo(document.querySelector('.demo-progress__btn'), document.querySelector('.demo-progress-line'), demoCanvasCtx);
 
 const stepBy = () => {
+    if ( Step == -1 ) {
+        document.querySelector('.demo-conteiner').style.display = 'flex';
+    }
     if ( Step == 0 ) {
+        document.querySelector('.demo-conteiner').style.display = 'none';
         renderCanvas();
         measuringDialog.textContent = 'Stellen Sie Meßpunkt auf. ';
         measuringDialog.textContent += 'Beginnen Sie von näheren linken Punkt. ';
@@ -100,6 +827,16 @@ const stepBy = () => {
         document.querySelector('.measuring-panel').style.display = 'none';
         document.querySelector('.out').style.display = 'block';
     }
+}
+
+const animate = (time, duration, draw) => {
+    req = requestAnimationFrame(() => {
+        let timeFraction = (performance.now() - time)/duration;
+        if ( timeFraction >1 ) timeFraction = 1;
+        draw(timeFraction);
+        if ( timeFraction == 1 )  return;
+        animate(time, duration, draw);
+    });
 }
 
 // обновить canvas;
@@ -1255,6 +1992,20 @@ inputMeasure.addEventListener('input', (event) => {
         event.target.value += str[i];
     }
 });
+
+addEventListener('click', (event) => {
+    const demoProgressLineConteiner = event.composedPath().find(item => {
+        if ( 'classList' in item )
+        return item.classList.contains('demo-progress-line-conteiner');
+    });
+    if ( demoProgressLineConteiner ) {
+        const progressLine = document.querySelector('.demo-progress-line-conteiner');
+        demoProgress = (event.clientX - progressLine.offsetLeft) / progressLine.offsetWidth;
+        demoObj.changeProgress(demoProgress);
+        return;
+    }
+});
+
 
 stepBy();
 

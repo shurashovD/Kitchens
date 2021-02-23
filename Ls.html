@@ -16,6 +16,16 @@
             <input type="button" value="Zurück" class="panel-btn" onclick="stepDec()">
             <input type="button" value="Weiter" class="panel-btn" onclick="stepInc()">
         </div>
+        <div class="demo-conteiner">
+            <div class="demo-progress">
+                <input type="button" value="" class="demo-progress__btn progress-btn__play" onclick="demoPlayPause(this)">
+                <div class="demo-progress-line-conteiner">
+                    <div class="demo-progress-line"></div>
+                </div>
+            </div>
+            <img src="" alt="demo-img" class="demo-conteiner__img">
+            <canvas width="600" height="450" class="demo-conteiner__cnv"></canvas>
+        </div>
         <div class="canvas-conteiner">
             <canvas id="measuring-canvas" width="980" height="630"></canvas>
             <div class="device-panel">
@@ -69,6 +79,7 @@
         </div>
     </section>
 </body>
+<!--
 <script>
     let firstDepth = <?php echo $_POST['first-pedestal-depth']; ?>;
     let secondDepth = <?php echo $_POST['second-pedestal-depth']; ?>;
@@ -78,5 +89,6 @@
     let initialBaseSide = <?php echo $_POST['base-side']; ?>;
     let initialBaseCounter = '<?php echo $_POST['base-counter']; ?>';
 </script>
+-->
 <script src="L-measure.js"></script>
 </html>
