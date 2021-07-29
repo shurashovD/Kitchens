@@ -38,9 +38,7 @@ let dieCoordsY = [];
 
 let initialBasePointOne, initialBasePointTwo;   // точки базовой стороны;
 let initialBaseSideOrientVertical = true;       // ориентация базовой столешницы;
-//let initialBaseSideFirst = true;              // базовая столешница первая;
 let initialLeftAngle = null;                    // угловая точка;
-//let initialBaseCounter = 'right';             // тип сопряжения 'right' 'left';
 
 const stepBy = () => {
     if ( Step == 0 ) {
@@ -445,8 +443,15 @@ const addInternalPoints = () => {
 
     if ( initialBaseSide ) {
         if (initialBaseSideOrientVertical) {
-            let x = parseFloat(MATRIX['A'].x) + parseFloat(firstWidthWorkTop);
+            let c = leftAngleNum;
+            let x = parseFloat(MATRIX['A'].x);
             let y = parseFloat(MATRIX['A'].y);
+            while (nonImpactPoints.includes(Letters[c])) c--;
+            for ( let i=0; i<=c; i++ ) {
+                if ( nonImpactPoints.includes(Letters[i]) ) continue;
+                if ( MATRIX[Letters[i]].x>x ) x = MATRIX[Letters[i]].x;
+            }
+            x += parseFloat(firstWidthWorkTop);
             updatePointInMatrix(Letters[length-1], x, y);
 
             let c = leftAngleNum;
@@ -464,8 +469,15 @@ const addInternalPoints = () => {
             updatePointInMatrix(Letters[length-3], x, y);
         }
         else {
+            let c = leftAngleNum;
             let x = parseFloat(MATRIX['A'].x);
-            let y = parseFloat(MATRIX['A'].y) - parseFloat(firstWidthWorkTop);
+            let y = parseFloat(MATRIX['A'].y);
+            while (nonImpactPoints.includes(Letters[c])) c--;
+            for ( let i=0; i<=c; i++ ) {
+                if ( nonImpactPoints.includes(Letters[i]) ) continue;
+                if ( MATRIX[Letters[i]].y<y ) y = MATRIX[Letters[i]].y;
+            }
+            y -= parseFloat(firstWidthWorkTop);
             updatePointInMatrix(Letters[length-1], x, y);
 
             c = leftAngleNum;
@@ -484,7 +496,14 @@ const addInternalPoints = () => {
     }
     else {
         if (initialBaseSideOrientVertical) {
-            let x = MATRIX[Letters[MeasPoints.size-1]].x - parseFloat(secondWidthWorkTop);
+            let c = leftAngleNum;
+            while (nonImpactPoints.includes(Letters[c])) c++;
+            let x = MATRIX[Letters[c]].x;
+            for ( let i=c; i<MeasPoints.size; i++ ) {
+                if ( nonImpactPoints.includes(Letters[i]) ) continue;
+                if ( MATRIX[Letters[i]].x<x ) x = MATRIX[Letters[i]].x;
+            }
+            x -= parseFloat(secondWidthWorkTop);
             let y = MATRIX[Letters[MeasPoints.size-1]].y;
             updatePointInMatrix(Letters[length-3], x, y);
 
@@ -499,11 +518,18 @@ const addInternalPoints = () => {
             updatePointInMatrix(Letters[length-2], x, y);
 
             x = MATRIX['A'].x;
-            updatePointInMatrix(Letters[length-1], x ,y);
+            updatePointInMatrix(Letters[length-1], x, y);
         }
         else {
+            let c = leftAngleNum;
+            while (nonImpactPoints.includes(Letters[c])) c++;
             let x = MATRIX[Letters[MeasPoints.size-1]].x;
-            let y = MATRIX[Letters[MeasPoints.size-1]].y - parseFloat(secondWidthWorkTop);
+            let y = MATRIX[Letters[c]].y;
+            for ( let i=c; i<MeasPoints.size; i++ ) {
+                if ( nonImpactPoints.includes(Letters[i]) ) continue;
+                if ( MATRIX[Letters[i]].y<y ) y = MATRIX[Letters[i]].y;
+            }
+            y -= parseFloat(secondWidthWorkTop);
             updatePointInMatrix(Letters[length-3], x, y);
 
             c = leftAngleNum;
@@ -511,13 +537,13 @@ const addInternalPoints = () => {
             x = MATRIX[Letters[c]].x;
             for ( let i=0; i<=c; i++ ) {
                 if ( nonImpactPoints.includes(Letters[i]) ) continue;
-                if ( MATRIX[Letters[i]].x<x ) x = MATRIX[Letters[i]].x;
+                if ( MATRIX[Letters[i]].x>x ) x = MATRIX[Letters[i]].x;
             }
             x += parseFloat(firstWidthWorkTop);
             updatePointInMatrix(Letters[length-2], x, y);
 
             y = MATRIX['A'].y;
-            updatePointInMatrix(Letters[length-1], x ,y);
+            updatePointInMatrix(Letters[length-1], x, y);
         }
     }
     console.log(MATRIX);
