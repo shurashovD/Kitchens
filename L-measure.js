@@ -454,7 +454,7 @@ const addInternalPoints = () => {
             x += parseFloat(firstWidthWorkTop);
             updatePointInMatrix(Letters[length-1], x, y);
 
-            let c = leftAngleNum;
+            c = leftAngleNum;
             while (nonImpactPoints.includes(Letters[c])) c++;
             y = parseFloat(MATRIX[Letters[c]].y);
             for ( let i=leftAngleNum; i<MeasPoints.size; i++ ) {
